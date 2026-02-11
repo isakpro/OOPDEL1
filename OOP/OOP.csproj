@@ -43,6 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OOP\Book.cs" />
+    <Compile Include="OOP\Loan.cs" />
+    <Compile Include="OOP\Member.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
