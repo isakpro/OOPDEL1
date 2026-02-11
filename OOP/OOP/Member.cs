@@ -11,9 +11,9 @@ namespace OOP
         public string Email { get; set; }
         public DateTime MemberSince { get; }
         
-        private List<Book> borrowedBooks;
+        private List<LibraryItem> borrowedItems;
 
-        public IReadOnlyList<Book> BorrowedBooks => borrowedBooks.AsReadOnly();
+        public IReadOnlyList<LibraryItem> BorrowedItems => borrowedItems.AsReadOnly();
 
         public Member(string memberId, string name, string email)
         {
@@ -21,20 +21,20 @@ namespace OOP
             Name = name;
             Email = email;
             MemberSince = DateTime.Now;
-            borrowedBooks = new List<Book>();
+            borrowedItems = new List<LibraryItem>();
         }
 
-        public void AddBorrowedBook(Book book)
+        public void AddBorrowedItem(LibraryItem item)
         {
-            if (!borrowedBooks.Contains(book))
+            if (!borrowedItems.Contains(item))
             {
-                borrowedBooks.Add(book);
+                borrowedItems.Add(item);
             }
         }
 
-        public void RemoveBorrowedBook(Book book)
+        public void RemoveBorrowedItem(LibraryItem item)
         {
-            borrowedBooks.Remove(book);
+            borrowedItems.Remove(item);
         }
 
         public string GetMemberInfo()
@@ -43,7 +43,7 @@ namespace OOP
                    $"Namn: {Name}\n" +
                    $"E-post: {Email}\n" +
                    $"Medlem sedan: {MemberSince:yyyy-MM-dd}\n" +
-                   $"Antal lånade böcker: {borrowedBooks.Count}";
+                   $"Antal lånade objekt: {borrowedItems.Count}";
         }
     }
 }

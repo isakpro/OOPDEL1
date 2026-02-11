@@ -44,7 +44,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="OOP\Book.cs" />
+    <Compile Include="OOP\DVD.cs" />
+    <Compile Include="OOP\LibraryItem.cs" />
     <Compile Include="OOP\Loan.cs" />
+    <Compile Include="OOP\Magazine.cs" />
     <Compile Include="OOP\Member.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

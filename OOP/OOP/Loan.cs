@@ -4,7 +4,7 @@ namespace OOP
 {
     internal class Loan
     {
-        public Book Book { get; }
+        public LibraryItem Item { get; }
         public Member Member { get; }
         public DateTime LoanDate { get; }
         public DateTime DueDate { get; }
@@ -24,22 +24,22 @@ namespace OOP
 
         public bool IsReturned => ReturnDate.HasValue;
 
-        public Loan(Book book, Member member, int loanDurationDays = 14)
+        public Loan(LibraryItem item, Member member, int loanDurationDays = 14)
         {
-            Book = book;
+            Item = item;
             Member = member;
             LoanDate = DateTime.Now;
             DueDate = LoanDate.AddDays(loanDurationDays);
             ReturnDate = null;
         }
 
-        public void ReturnBook()
+        public void ReturnItem()
         {
             if (!IsReturned)
             {
                 ReturnDate = DateTime.Now;
-                Book.IsAvailable = true;
-                Member.RemoveBorrowedBook(Book);
+                Item.IsAvailable = true;
+                Member.RemoveBorrowedItem(Item);
             }
         }
 
@@ -48,7 +48,7 @@ namespace OOP
             string status = IsReturned ? $"Returnerad: {ReturnDate:yyyy-MM-dd}" :
                            IsOverdue ? "FÖRSENAD" : "Aktiv";
             
-            return $"Bok: {Book.Title}\n" +
+            return $"{Item.GetItemType()}: {Item.Title}\n" +
                    $"Medlem: {Member.Name}\n" +
                    $"Lånedatum: {LoanDate:yyyy-MM-dd}\n" +
                    $"Förfallodatum: {DueDate:yyyy-MM-dd}\n" +
