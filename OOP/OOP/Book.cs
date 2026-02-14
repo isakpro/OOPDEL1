@@ -2,7 +2,7 @@ using System;
 
 namespace OOP
 {
-    internal class Book : LibraryItem
+    internal class Book : LibraryItem, ISearchable
     {
         public string ISBN { get; }
         public string Author { get; set; }
@@ -23,6 +23,17 @@ namespace OOP
                    $"Författare: {Author}\n" +
                    $"Utgivningsår: {PublishedYear}\n" +
                    $"Status: {availability}";
+        }
+
+        public bool Matches(string searchTerm)
+        {
+            if (string.IsNullOrWhiteSpace(searchTerm))
+                return false;
+
+            string term = searchTerm.ToLower();
+            return Title.ToLower().Contains(term) ||
+                   Author.ToLower().Contains(term) ||
+                   ISBN.ToLower().Contains(term);
         }
     }
 }

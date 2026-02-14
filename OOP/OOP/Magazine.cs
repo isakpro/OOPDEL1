@@ -2,7 +2,7 @@ using System;
 
 namespace OOP
 {
-    internal class Magazine : LibraryItem
+    internal class Magazine : LibraryItem, ISearchable
     {
         public string Publisher { get; set; }
         public int IssueNumber { get; set; }
@@ -24,6 +24,17 @@ namespace OOP
                    $"Nummer: {IssueNumber}\n" +
                    $"Utgivningsår: {PublishedYear}\n" +
                    $"Status: {availability}";
+        }
+
+        public bool Matches(string searchTerm)
+        {
+            if (string.IsNullOrWhiteSpace(searchTerm))
+                return false;
+
+            string term = searchTerm.ToLower();
+            return Title.ToLower().Contains(term) ||
+                   Publisher.ToLower().Contains(term) ||
+                   Id.ToLower().Contains(term);
         }
     }
 }

@@ -2,7 +2,7 @@ using System;
 
 namespace OOP
 {
-    internal class DVD : LibraryItem
+    internal class DVD : LibraryItem, ISearchable
     {
         public string Director { get; set; }
         public int Duration { get; set; }
@@ -28,6 +28,17 @@ namespace OOP
                    $"Speltid: {durationText}\n" +
                    $"Utgivningsår: {PublishedYear}\n" +
                    $"Status: {availability}";
+        }
+
+        public bool Matches(string searchTerm)
+        {
+            if (string.IsNullOrWhiteSpace(searchTerm))
+                return false;
+
+            string term = searchTerm.ToLower();
+            return Title.ToLower().Contains(term) ||
+                   Director.ToLower().Contains(term) ||
+                   Id.ToLower().Contains(term);
         }
     }
 }

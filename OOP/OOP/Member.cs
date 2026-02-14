@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace OOP
 {
-    internal class Member
+    internal class Member : ISearchable
     {
         public string MemberId { get; }
         public string Name { get; set; }
@@ -44,6 +44,17 @@ namespace OOP
                    $"E-post: {Email}\n" +
                    $"Medlem sedan: {MemberSince:yyyy-MM-dd}\n" +
                    $"Antal lånade objekt: {borrowedItems.Count}";
+        }
+
+        public bool Matches(string searchTerm)
+        {
+            if (string.IsNullOrWhiteSpace(searchTerm))
+                return false;
+
+            string term = searchTerm.ToLower();
+            return Name.ToLower().Contains(term) ||
+                   Email.ToLower().Contains(term) ||
+                   MemberId.ToLower().Contains(term);
         }
     }
 }
