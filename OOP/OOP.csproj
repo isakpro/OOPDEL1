@@ -45,6 +45,8 @@
   <ItemGroup>
     <Compile Include="OOP\Book.cs" />
     <Compile Include="OOP\DVD.cs" />
+    <Compile Include="OOP\ISearchable.cs" />
+    <Compile Include="OOP\Library.cs" />
     <Compile Include="OOP\LibraryItem.cs" />
     <Compile Include="OOP\Loan.cs" />
     <Compile Include="OOP\Magazine.cs" />

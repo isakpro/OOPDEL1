@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace OOP
 {
-    internal class Library
+    public class Library
     {
         private List<LibraryItem> items;
         private List<Member> members;

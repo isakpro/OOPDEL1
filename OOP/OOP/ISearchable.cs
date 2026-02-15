@@ -2,7 +2,7 @@ using System;
 
 namespace OOP
 {
-    internal interface ISearchable
+    public interface ISearchable
     {
         bool Matches(string searchTerm);
     }

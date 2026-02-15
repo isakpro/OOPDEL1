@@ -2,7 +2,7 @@ using System;
 
 namespace OOP
 {
-    internal class Loan
+    public class Loan
     {
         public LibraryItem Item { get; }
         public Member Member { get; }

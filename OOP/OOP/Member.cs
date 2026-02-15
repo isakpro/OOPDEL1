@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace OOP
 {
-    internal class Member : ISearchable
+    public class Member : ISearchable
     {
         public string MemberId { get; }
         public string Name { get; set; }

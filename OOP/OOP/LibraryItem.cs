@@ -2,7 +2,7 @@ using System;
 
 namespace OOP
 {
-    internal abstract class LibraryItem
+    public abstract class LibraryItem
     {
         public string Id { get; }
         public string Title { get; set; }

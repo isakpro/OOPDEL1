@@ -2,7 +2,7 @@ using System;
 
 namespace OOP
 {
-    internal class Book : LibraryItem, ISearchable
+    public class Book : LibraryItem, ISearchable
     {
         public string ISBN { get; }
         public string Author { get; set; }

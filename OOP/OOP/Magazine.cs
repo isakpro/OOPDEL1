@@ -2,7 +2,7 @@ using System;
 
 namespace OOP
 {
-    internal class Magazine : LibraryItem, ISearchable
+    public class Magazine : LibraryItem, ISearchable
     {
         public string Publisher { get; set; }
         public int IssueNumber { get; set; }

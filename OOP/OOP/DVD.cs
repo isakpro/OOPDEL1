@@ -2,7 +2,7 @@ using System;
 
 namespace OOP
 {
-    internal class DVD : LibraryItem, ISearchable
+    public class DVD : LibraryItem, ISearchable
     {
         public string Director { get; set; }
         public int Duration { get; set; }
