@@ -35,10 +35,10 @@ namespace OOP
             if (string.IsNullOrWhiteSpace(searchTerm))
                 return false;
 
-            string term = searchTerm.ToLower();
-            return Title.ToLower().Contains(term) ||
-                   Director.ToLower().Contains(term) ||
-                   Id.ToLower().Contains(term);
+            string term = searchTerm.ToLowerInvariant();
+            return Title.ToLowerInvariant().Contains(term) ||
+                   Director.ToLowerInvariant().Contains(term) ||
+                   ExternalId.ToLowerInvariant().Contains(term);
         }
     }
 }

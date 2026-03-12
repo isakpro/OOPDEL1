@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OOP
 {
+    // Domain member kept for business logic (non-EF) if needed
     public class Member : ISearchable
     {
         public string MemberId { get; }
         public string Name { get; set; }
         public string Email { get; set; }
         public DateTime MemberSince { get; }
-        
+
         private List<LibraryItem> borrowedItems;
 
         public IReadOnlyList<LibraryItem> BorrowedItems => borrowedItems.AsReadOnly();
@@ -56,5 +56,18 @@ namespace OOP
                    Email.ToLower().Contains(term) ||
                    MemberId.ToLower().Contains(term);
         }
+    }
+
+    // EF entity for Member persistence
+    public class MemberEntity
+    {
+        public int Id { get; set; }
+        public string MemberId { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public DateTime MemberSince { get; set; }
+
+        // Navigation property for EF; use EF entity types here
+        public ICollection<LoanEntity> Loans { get; set; } = new List<LoanEntity>();
     }
 }

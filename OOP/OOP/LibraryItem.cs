@@ -4,16 +4,29 @@ namespace OOP
 {
     public abstract class LibraryItem
     {
-        public string Id { get; }
+        // EF-friendly primary key when used as entity
+        public int Id { get; set; }
+
+        // Legacy identifier (e.g. ISBN or custom id)
+        public string ExternalId { get; set; }
+
         public string Title { get; set; }
         public int PublishedYear { get; set; }
         public bool IsAvailable { get; set; }
 
-        protected LibraryItem(string id, string title, int publishedYear)
+        protected LibraryItem(string externalId, string title, int publishedYear)
         {
-            Id = id;
+            ExternalId = externalId;
             Title = title;
             PublishedYear = publishedYear;
+            IsAvailable = true;
+        }
+
+        protected LibraryItem()
+        {
+            ExternalId = string.Empty;
+            Title = string.Empty;
+            PublishedYear = 0;
             IsAvailable = true;
         }
 

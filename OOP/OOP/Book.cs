@@ -1,11 +1,19 @@
 using System;
+using System.Collections.Generic;
 
 namespace OOP
 {
     public class Book : LibraryItem, ISearchable
     {
-        public string ISBN { get; }
-        public string Author { get; set; }
+        // Navigation property for EF
+        public ICollection<LoanEntity> Loans { get; set; } = new List<LoanEntity>();
+        public string ISBN { get; set; } = string.Empty;
+        public string Author { get; set; } = string.Empty;
+
+        public Book()
+            : base(string.Empty, string.Empty, 0)
+        {
+        }
 
         public Book(string isbn, string title, string author, int publishedYear)
             : base(isbn, title, publishedYear)
@@ -30,10 +38,10 @@ namespace OOP
             if (string.IsNullOrWhiteSpace(searchTerm))
                 return false;
 
-            string term = searchTerm.ToLower();
-            return Title.ToLower().Contains(term) ||
-                   Author.ToLower().Contains(term) ||
-                   ISBN.ToLower().Contains(term);
+            string term = searchTerm.ToLowerInvariant();
+            return Title.ToLowerInvariant().Contains(term) ||
+                   Author.ToLowerInvariant().Contains(term) ||
+                   ISBN.ToLowerInvariant().Contains(term);
         }
     }
 }
