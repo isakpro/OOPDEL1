@@ -1,0 +1,81 @@
+@page "/books"
+@inject OOP.Repositories.IBookRepository BookRepository
+
+<h3>Böcker</h3>
+<div class="d-flex justify-content-between mb-2">
+    <div>
+        <input @bind="searchTerm" placeholder="Sök..." class="form-control" />
+    </div>
+    <div>
+        <a class="btn btn-success" href="/books/add">Lägg till bok</a>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th><a href="#" @onclick="() => SortBy(nameof(Book.Title))">Titel</a></th>
+            <th><a href="#" @onclick="() => SortBy(nameof(Book.Author))">Författare</a></th>
+            <th><a href="#" @onclick="() => SortBy(nameof(Book.ISBN))">ISBN</a></th>
+            <th>Tillgänglig</th>
+            <th>Åtgärder</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var book in books)
+        {
+            <tr>
+                <td><a href="/books/@book.Id">@book.Title</a></td>
+                <td>@book.Author</td>
+                <td>@book.ISBN</td>
+                <td>@(book.IsAvailable ? "Ja" : "Nej")</td>
+                <td>
+                    <a class="btn btn-sm btn-primary" href="/books/edit/@book.Id">Redigera</a>
+                    <button class="btn btn-sm btn-danger" @onclick="() => Delete(book.Id)">Radera</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private IEnumerable<Book> books = Enumerable.Empty<Book>();
+    private string searchTerm = string.Empty;
+    private string? sortBy;
+    private bool sortDesc;
+
+    protected override async Task OnInitializedAsync()
+    {
+        books = await BookRepository.GetAllAsync();
+    }
+
+    private async Task Search()
+    {
+        books = await BookRepository.SearchAsync(searchTerm);
+    }
+
+    private async Task Delete(int id)
+    {
+        await BookRepository.DeleteAsync(id);
+        books = await BookRepository.GetAllAsync();
+    }
+
+    private void SortBy(string property)
+    {
+        if (sortBy == property)
+            sortDesc = !sortDesc;
+        else
+        {
+            sortBy = property;
+            sortDesc = false;
+        }
+
+        books = sortBy switch
+        {
+            nameof(Book.Title) => sortDesc ? books.OrderByDescending(b => b.Title) : books.OrderBy(b => b.Title),
+            nameof(Book.Author) => sortDesc ? books.OrderByDescending(b => b.Author) : books.OrderBy(b => b.Author),
+            nameof(Book.ISBN) => sortDesc ? books.OrderByDescending(b => b.ISBN) : books.OrderBy(b => b.ISBN),
+            _ => books
+        };
+    }
+}

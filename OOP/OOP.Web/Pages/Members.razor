@@ -1,0 +1,42 @@
+@page "/members"
+@inject OOP.Repositories.IMemberRepository MemberRepository
+
+<h3>Medlemmar</h3>
+
+<a class="btn btn-success mb-2" href="/members/add">Registrera medlem</a>
+
+@if (members == null)
+{
+    <p>Hämtar...</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Namn</th>
+                <th>E-post</th>
+                <th>Medlem sedan</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var m in members)
+            {
+                <tr>
+                    <td>@m.Name</td>
+                    <td>@m.Email</td>
+                    <td>@m.MemberSince.ToString("yyyy-MM-dd")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IEnumerable<MemberEntity>? members;
+
+    protected override async Task OnInitializedAsync()
+    {
+        members = await MemberRepository.GetAllAsync();
+    }
+}

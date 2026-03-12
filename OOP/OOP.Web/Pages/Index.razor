@@ -1,0 +1,15 @@
+@page "/"
+@inject OOP.Repositories.IBookRepository BookRepository
+
+<h2>Välkommen</h2>
+<p>Snabbstatistik</p>
+
+@code {
+    private int totalBooks;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var books = await BookRepository.GetAllAsync();
+        totalBooks = books.Count();
+    }
+}

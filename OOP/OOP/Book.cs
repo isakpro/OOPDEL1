@@ -3,11 +3,18 @@ using System.Collections.Generic;
 
 namespace OOP
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class Book : LibraryItem, ISearchable
     {
         // Navigation property for EF
         public ICollection<LoanEntity> Loans { get; set; } = new List<LoanEntity>();
+        [Required]
+        [StringLength(20)]
         public string ISBN { get; set; } = string.Empty;
+
+        [Required]
+        [StringLength(200)]
         public string Author { get; set; } = string.Empty;
 
         public Book()

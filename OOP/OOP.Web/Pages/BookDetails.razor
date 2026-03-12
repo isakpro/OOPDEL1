@@ -1,0 +1,30 @@
+@page "/books/{Id:int}"
+@inject OOP.Repositories.IBookRepository BookRepository
+
+<h3>Detaljer</h3>
+
+@if (book == null)
+{
+    <p>Bok hittades inte.</p>
+}
+else
+{
+    <div>
+        <h4>@book.Title</h4>
+        <p>@book.Author (@book.PublishedYear)</p>
+        <p>ISBN: @book.ISBN</p>
+        <p>Status: @(book.IsAvailable ? "Tillgänglig" : "Utlånad")</p>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private Book? book;
+
+    protected override async Task OnInitializedAsync()
+    {
+        book = await BookRepository.GetByIdAsync(Id);
+    }
+}

@@ -1,0 +1,114 @@
+@page "/loans"
+@inject OOP.Repositories.ILoanRepository LoanRepository
+@inject OOP.Repositories.IBookRepository BookRepository
+@inject OOP.Repositories.IMemberRepository MemberRepository
+
+<h3>Utlåning</h3>
+
+<div class="row">
+    <div class="col-md-6">
+        <h4>Nytt lån</h4>
+        <EditForm Model="newLoan" OnValidSubmit="CreateLoan">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="form-group">
+                <label>Bok</label>
+                <select @bind="newLoan.BookId" class="form-control">
+                    <option value="">-- välj --</option>
+                    @foreach (var b in allBooks)
+                    {
+                        <option value="@b.Id">@b.Title</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Medlem</label>
+                <select @bind="newLoan.MemberId" class="form-control">
+                    <option value="">-- välj --</option>
+                    @foreach (var m in allMembers)
+                    {
+                        <option value="@m.Id">@m.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Period (dagar)</label>
+                <InputNumber @bind-Value="newLoanPeriod" class="form-control" />
+            </div>
+
+            <button type="submit" class="btn btn-primary">Skapa lån</button>
+        </EditForm>
+    </div>
+
+    <div class="col-md-6">
+        <h4>Aktiva lån</h4>
+        @if (activeLoans == null)
+        {
+            <p>Hämtar...</p>
+        }
+        else
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Bok</th>
+                        <th>Medlem</th>
+                        <th>Förfallodatum</th>
+                        <th>Åtgärd</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var l in activeLoans)
+                    {
+                        <tr class="@(l.IsOverdue ? "table-danger" : "")">
+                            <td>@l.Book?.Title</td>
+                            <td>@l.Member?.Name</td>
+                            <td>@l.DueDate.ToString("yyyy-MM-dd")</td>
+                            <td>
+                                <button class="btn btn-sm btn-success" @onclick="() => ReturnLoan(l.Id)">Returnera</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+@code {
+    private IEnumerable<Book> allBooks = Enumerable.Empty<Book>();
+    private IEnumerable<MemberEntity> allMembers = Enumerable.Empty<MemberEntity>();
+    private IEnumerable<LoanEntity>? activeLoans;
+
+    private LoanEntity newLoan = new LoanEntity();
+    private int newLoanPeriod = 14;
+
+    protected override async Task OnInitializedAsync()
+    {
+        allBooks = await BookRepository.GetAllAsync();
+        allMembers = await MemberRepository.GetAllAsync();
+        activeLoans = await LoanRepository.GetActiveLoansAsync();
+    }
+
+    private async Task CreateLoan()
+    {
+        newLoan.LoanDate = DateTime.Now;
+        newLoan.DueDate = DateTime.Now.AddDays(newLoanPeriod);
+        await LoanRepository.AddAsync(newLoan);
+        activeLoans = await LoanRepository.GetActiveLoansAsync();
+    }
+
+    private async Task ReturnLoan(int id)
+    {
+        var loan = (await LoanRepository.GetActiveLoansAsync()).FirstOrDefault(l => l.Id == id);
+        if (loan != null)
+        {
+            loan.ReturnDate = DateTime.Now;
+            await LoanRepository.UpdateAsync(loan);
+            activeLoans = await LoanRepository.GetActiveLoansAsync();
+        }
+    }
+}

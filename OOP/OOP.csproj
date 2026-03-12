@@ -16,8 +16,8 @@
     <!-- Preserve App.config if used -->
     <None Include="App.config" />
     <!-- Include existing source files in OOP folder and Program/AssemblyInfo -->
-    <Compile Include="OOP\*.cs" />
-    <Compile Include="OOP\Entities\LibraryContext.cs" />
+    <Compile Include="OOP\**\*.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
