@@ -71,5 +71,24 @@ namespace OOP.Tests
                 Assert.Equal("C# Guide", results[0].Title);
             }
         }
+
+        [Fact]
+        public async Task DeleteAsync_ShouldRemoveBookFromDatabase()
+        {
+            var options = CreateNewContextOptions();
+
+            using (var context = new LibraryContext(options))
+            {
+                var book = new Book("999", "To Delete", "Author", 2024);
+                context.Books.Add(book);
+                await context.SaveChangesAsync();
+
+                var repository = new BookRepository(context);
+                await repository.DeleteAsync(book.Id);
+
+                var all = (await repository.GetAllAsync()).ToList();
+                Assert.Empty(all);
+            }
+        }
     }
 }
